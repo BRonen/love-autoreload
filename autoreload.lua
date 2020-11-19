@@ -6,7 +6,10 @@ local Files = {} --files on current file
 local currentLove
 
 local function restartLove()
-  io.close(currentLove)
+  local pgrep = assert(io.popen('pgrep love', 'r')) --run ls
+  local pid = pgrep:read('*all')
+  os.execute('kill '..pid)
+  pgrep:close()
   currentLove = assert(io.popen('love .', 'r')) --run a new instance of love
 end
 
@@ -52,3 +55,4 @@ while true do
   main()
   ffi.C.sleep(2) --you can use io.popen('sleep 2', 'r') but cant stop with Ctrl+C to stop
 end
+a
